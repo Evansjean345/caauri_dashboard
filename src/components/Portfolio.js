@@ -68,8 +68,8 @@ function Portfolio() {
     formData.append("descriptionThree", descriptionThree);
     formData.append("title", title);
     ///
-    formData.append("problematic.p1", problematic.p1);
-    formData.append("problematic.p2", problematic.p2);
+    formData.append("problematic[0][p1]", problematic.p1);
+    formData.append("problematic[1][p2]", problematic.p2);
     formData.append("strategy.p1", strategy.p1);
     formData.append("strategy.p2", strategy.p2);
 
@@ -784,7 +784,6 @@ function Portfolio() {
                 <Textarea
                   variant="standard"
                   label="paragraphe 1"
-                  name="problematic.p1"
                   value={problematic.p1}
                   onChange={(e) => {
                     const value = e.target.value;
@@ -797,7 +796,6 @@ function Portfolio() {
                 <Textarea
                   variant="standard"
                   label="paragraphe 2"
-                  name="problematic.p2"
                   value={problematic.p2}
                   onChange={(e) => {
                     const value = e.target.value;
