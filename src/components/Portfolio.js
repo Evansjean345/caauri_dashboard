@@ -28,19 +28,14 @@ function Portfolio() {
   //page recursive
   const [title, setTitle] = useState("");
   const [type, setType] = useState("");
-  const [problematic, setProblematic] = useState({
-    p1: "",
-    p2: "",
-  });
-  const [strategy, setStrategy] = useState({
-    p1: "",
-    p2: "",
-  });
-  const [client, setClient] = useState({
-    p: "",
-    name: "",
-    role: "",
-  });
+  const [problematicOne, setProblematicOne] = useState("");
+  const [problematicTwo, setProblematicTwo] = useState("");
+  const [strategyOne, setStrategyOne] = useState("");
+  const [strategyTwo, setStrategyTwo] = useState("");
+  const [clientName, setClientName] = useState("");
+  const [clientJob, setClientJob] = useState("");
+  const [clientContent, setClientContent] = useState("");
+
   //upload d'image
   const [picture, setPicture] = useState([]);
   const [render, setRender] = useState([]);
@@ -68,15 +63,14 @@ function Portfolio() {
     formData.append("descriptionThree", descriptionThree);
     formData.append("title", title);
     ///
-    formData.append("problematic[0][p1]", problematic.p1);
-    formData.append("problematic[1][p2]", problematic.p2);
-    formData.append("strategy.p1", strategy.p1);
-    formData.append("strategy.p2", strategy.p2);
-
+    formData.append("problematicOne", problematicOne);
+    formData.append("problematicTwo", problematicOne);
+    formData.append("strategyOne", strategyOne);
+    formData.append("strategyTwo", strategyTwo);
     // Ajouter les champs d'objet imbriqué 'client'
-    formData.append("client.name", client.name);
-    formData.append("client.role", client.role);
-    formData.append("client.p", client.p);
+    formData.append("clientName", clientName);
+    formData.append("clientJob", clientJob);
+    formData.append("clientContent", clientContent);
     for (let i = 0; i < picture.length; i++) {
       formData.append(`picture`, picture[i]);
     }
@@ -107,9 +101,13 @@ function Portfolio() {
       //recursive page
       title: "",
       type: "",
-      problematic: "",
-      strategy: "",
-      client: "",
+      problematicOne: "",
+      problematicTwo: "",
+      strategyOne: "",
+      strategyTwo: "",
+      clientName: "",
+      clientJob: "",
+      clientContent: "",
     },
   ]);
 
@@ -784,26 +782,16 @@ function Portfolio() {
                 <Textarea
                   variant="standard"
                   label="paragraphe 1"
-                  value={problematic.p1}
-                  onChange={(e) => {
-                    const value = e.target.value;
-                    setProblematic((prevRecipient) => ({
-                      ...prevRecipient,
-                      p1: value,
-                    }));
-                  }}
+                  name="problematicOne"
+                  value={problematicOne}
+                  onChange={(e) => setProblematicOne(e.target.value)}
                 />
                 <Textarea
                   variant="standard"
                   label="paragraphe 2"
-                  value={problematic.p2}
-                  onChange={(e) => {
-                    const value = e.target.value;
-                    setProblematic((prevRecipient) => ({
-                      ...prevRecipient,
-                      p2: value,
-                    }));
-                  }}
+                  name="problematicTwo"
+                  value={problematicTwo}
+                  onChange={(e) => setProblematicTwo(e.target.value)}
                 />
               </div>
               <div className="w-1/2 px-8">
@@ -811,28 +799,16 @@ function Portfolio() {
                 <Textarea
                   variant="standard"
                   label="paragraphe 1"
-                  name="strategy.p1"
-                  value={strategy.p1}
-                  onChange={(e) => {
-                    const value = e.target.value;
-                    setStrategy((prevRecipient) => ({
-                      ...prevRecipient,
-                      p1: value,
-                    }));
-                  }}
+                  name="strategyOne"
+                  value={strategyOne}
+                  onChange={(e) => setStrategyOne(e.target.value)}
                 />
                 <Textarea
                   variant="standard"
                   label="paragraphe 2"
-                  name="strategy.p1"
-                  value={strategy.p2}
-                  onChange={(e) => {
-                    const value = e.target.value;
-                    setStrategy((prevRecipient) => ({
-                      ...prevRecipient,
-                      p2: value,
-                    }));
-                  }}
+                  name="strategyTwo"
+                  value={strategyTwo}
+                  onChange={(e) => setStrategyTwo(e.target.value)}
                 />
               </div>
             </div>
@@ -842,43 +818,25 @@ function Portfolio() {
                 <Input
                   variant="standard"
                   label="nom du client"
-                  value={client.name}
-                  name="client.name"
-                  onChange={(e) => {
-                    const value = e.target.value;
-                    setClient((prevRecipient) => ({
-                      ...prevRecipient,
-                      name: value,
-                    }));
-                  }}
+                  value={clientName}
+                  name="clientName"
+                  onChange={(e) => setClientName(e.target.value)}
                 />
                 <Input
                   variant="standard"
                   label="poste du client"
-                  value={client.role}
-                  name="client.role"
-                  onChange={(e) => {
-                    const value = e.target.value;
-                    setClient((prevRecipient) => ({
-                      ...prevRecipient,
-                      role: value,
-                    }));
-                  }}
+                  value={clientJob}
+                  name="clientJob"
+                  onChange={(e) => setClientJob(e.target.value)}
                 />
               </div>
               <div className="py-8 w-1/2">
                 <Textarea
                   variant="standard"
                   label="retour du client"
-                  value={client.p}
-                  name="client.p"
-                  onChange={(e) => {
-                    const value = e.target.value;
-                    setClient((prevRecipient) => ({
-                      ...prevRecipient,
-                      p: value,
-                    }));
-                  }}
+                  value={clientContent}
+                  name="clientContent"
+                  onChange={(e) => setClientContent(e.target.value)}
                 />
               </div>
             </div>
@@ -1057,19 +1015,20 @@ function Portfolio() {
                     <Textarea
                       variant="standard"
                       label="paragraphe 1"
-                      name="problematic.p1"
-                      value={data.problematic && data.problematic.p1}
+                      name="problematicOne"
+                      value={data.problematicOne}
                       onChange={(e) =>
-                        handleChange(index, "problematic.p1", e.target.value)
+                        handleChange(index, "problematicOne", e.target.value)
                       }
                     />
                     <Textarea
                       variant="standard"
                       label="paragraphe 2"
-                      name="problematic.p2"
-                      value={data.problematic && data.problematic.p2}
+       
+                      name="problematicTwo"
+                      value={data.problematicTwo}
                       onChange={(e) =>
-                        handleChange(index, "problematic.p2", e.target.value)
+                        handleChange(index, "problematicTwo", e.target.value)
                       }
                     />
                   </div>
@@ -1078,19 +1037,19 @@ function Portfolio() {
                     <Textarea
                       variant="standard"
                       label="paragraphe 1"
-                      name="strategy.p1"
-                      value={data.strategy && data.strategy.p1}
+                      name="strategyOne"
+                      value={data.strategyOne}
                       onChange={(e) =>
-                        handleChange(index, "strategy.p1", e.target.value)
+                        handleChange(index, "strategyOne", e.target.value)
                       }
                     />
                     <Textarea
                       variant="standard"
                       label="paragraphe 2"
-                      name="strategy.p2"
-                      value={data.strategy && data.strategy.p2}
+                      name="strategyTwo"
+                      value={data.strategyTwo}
                       onChange={(e) =>
-                        handleChange(index, "strategy.p2", e.target.value)
+                        handleChange(index, "strategyTwo", e.target.value)
                       }
                     />
                   </div>
@@ -1101,19 +1060,19 @@ function Portfolio() {
                     <Input
                       variant="standard"
                       label="nom du client"
-                      value={data.client && data.client.name}
-                      name="client.name"
+                      value={data.clientName}
+                      name="clientName"
                       onChange={(e) =>
-                        handleChange(index, "client.name", e.target.value)
+                        handleChange(index, "clientName", e.target.value)
                       }
                     />
                     <Textarea
                       variant="standard"
                       label="poste du client"
-                      name="client.role"
-                      value={data.client && data.client.role}
+                      value={data.clientJob}
+                      name="clientJob"
                       onChange={(e) =>
-                        handleChange(index, "client.role", e.target.value)
+                        handleChange(index, "clientJob", e.target.value)
                       }
                     />
                   </div>
@@ -1121,10 +1080,10 @@ function Portfolio() {
                     <Textarea
                       variant="standard"
                       label="retour du client"
-                      value={data.client && data.client.p}
-                      name="client.p"
+                      value={data.clientContent}
+                      name="clientContent"
                       onChange={(e) =>
-                        handleChange(index, "client.p", e.target.value)
+                        handleChange(index, "clientContent", e.target.value)
                       }
                     />
                   </div>
