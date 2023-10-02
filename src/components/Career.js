@@ -29,7 +29,7 @@ function Career() {
       go_to: go_to,
     };
     axios
-      .post("http://localhost:4000/career", data)
+      .post("https://caauri-api.cyclic.cloud/career", data)
       .then((res) => console.log("response", res))
       .catch((err) => console.log("error", err));
     handleOpen();
@@ -37,7 +37,7 @@ function Career() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:4000/career")
+      .get("https://caauri-api.cyclic.cloud/career")
       .then((res) => {
         setAllData(res.data);
       })
@@ -602,7 +602,7 @@ function Career() {
                   const updatedData = allData[index];
                   axios
                     .put(
-                      `http://localhost:4000/career/${data._id}`,
+                      `https://caauri-api.cyclic.cloud/career/${data._id}`,
                       updatedData
                     )
                     .then((res) => console.log("response", res))

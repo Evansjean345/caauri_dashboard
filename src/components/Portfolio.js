@@ -25,6 +25,23 @@ function Portfolio() {
   const [descriptionOne, setDescriptionOne] = useState("");
   const [descriptionTwo, setDescriptionTwo] = useState("");
   const [descriptionThree, setDescriptionThree] = useState("");
+  //page recursive
+  const [title, setTitle] = useState("");
+  const [type, setType] = useState("");
+  const [problematic, setProblematic] = useState({
+    p1: "",
+    p2: "",
+  });
+  const [strategy, setStrategy] = useState({
+    p1: "",
+    p2: "",
+  });
+  const [client, setClient] = useState({
+    p: "",
+    name: "",
+    role: "",
+  });
+  //upload d'image
   const [picture, setPicture] = useState([]);
   const [render, setRender] = useState([]);
   const [open, setOpen] = useState(false);
@@ -49,12 +66,23 @@ function Portfolio() {
     formData.append("descriptionOne", descriptionOne);
     formData.append("descriptionTwo", descriptionTwo);
     formData.append("descriptionThree", descriptionThree);
+    formData.append("title", title);
+    ///
+    formData.append("problematic[p1]", problematic.p1);
+    formData.append("problematic[p2]", problematic.p2);
+    formData.append("strategy[p1]", strategy.p1);
+    formData.append("strategy[p2]", strategy.p2);
+
+    // Ajouter les champs d'objet imbriqué 'client'
+    formData.append("client[name]", client.name);
+    formData.append("client[role]", client.role);
+    formData.append("client[p]", client.p);
     for (let i = 0; i < picture.length; i++) {
       formData.append(`picture`, picture[i]);
     }
 
     axios
-      .post("http://localhost:4000/portfolio", formData)
+      .post("https://caauri-api.cyclic.cloud/portfolio", formData)
       .then((res) => {
         console.log("response", res);
         handleOpen();
@@ -76,12 +104,18 @@ function Portfolio() {
       featureFive: "",
       featureSix: "",
       featureSeven: "",
+      //recursive page
+      title: "",
+      type: "",
+      problematic: "",
+      strategy: "",
+      client: "",
     },
   ]);
 
   useEffect(() => {
     axios
-      .get("http://localhost:4000/portfolio")
+      .get("https://caauri-api.cyclic.cloud/portfolio")
       .then((res) => {
         setAllData(res.data);
       })
@@ -90,7 +124,20 @@ function Portfolio() {
 
   const handleChange = (index, field, value) => {
     const newData = [...allData];
-    newData[index][field] = value;
+    const updatedData = { ...newData[index] };
+
+    // Divisez la propriété field en une série de clés
+    const keys = field.split(".");
+
+    // Mettez à jour l'objet imbriqué avec la nouvelle valeur
+    let currentLevel = updatedData;
+    for (let i = 0; i < keys.length - 1; i++) {
+      currentLevel = currentLevel[keys[i]];
+    }
+    currentLevel[keys[keys.length - 1]] = value;
+
+    // Mettez à jour l'état avec la nouvelle copie profonde
+    newData[index] = updatedData;
     setAllData(newData);
   };
 
@@ -98,7 +145,7 @@ function Portfolio() {
     <div className="flex flex-no-wrap">
       {/* Sidebar starts */}
       {/* Remove class [ hidden ] and replace [ sm:flex ] with [ flex ] */}
-      <div className="w-64 absolute sm:relative bg-black shadow h-[700vh] flex-col justify-between hidden sm:flex">
+      <div className="w-64 absolute sm:relative bg-black shadow h-[1000vh] flex-col justify-between hidden sm:flex">
         <div className="px-8 py-8">
           <div className="h-16 w-full flex items-center">
             <img src="/images/logo_white.png" alt="" />
@@ -596,7 +643,7 @@ function Portfolio() {
           <form className="flex flex-col w-full" onSubmit={handleSubmit}>
             <div className="flex">
               <div className="w-1/2 py-8 px-8">
-                <strong>Titre</strong>
+                <strong>Nom du projet</strong>
                 <Textarea
                   variant="standard"
                   label="titre"
@@ -631,8 +678,7 @@ function Portfolio() {
             </div>
             <div className="flex w-full relative">
               <strong className="absolute top-0 left-12">
-                {" "}
-                Caractéristiques{" "}
+                Services fournis
               </strong>
               <div className="w-1/2 flex flex-col space-y-2 px-8 py-8">
                 <Input
@@ -688,29 +734,155 @@ function Portfolio() {
                 />
               </div>
             </div>
-            <div className="w-1/2 px-8">
-              <strong className="">Description</strong>
-              <Input
-                variant="standard"
-                label="contenu"
-                name="descriptionOne"
-                value={descriptionOne}
-                onChange={(e) => setDescriptionOne(e.target.value)}
-              />
-              <Input
-                variant="standard"
-                label="contenu"
-                name="descriptionTwo"
-                value={descriptionTwo}
-                onChange={(e) => setDescriptionTwo(e.target.value)}
-              />
-              <Input
-                variant="standard"
-                label="contenu"
-                name="descriptionThree"
-                value={descriptionThree}
-                onChange={(e) => setDescriptionThree(e.target.value)}
-              />
+            <div className=" w-full flex px-8">
+              <div className="w-1/2">
+                <strong className="">Description du projet en 3 etapes</strong>
+                <Input
+                  variant="standard"
+                  label="contenu"
+                  name="descriptionOne"
+                  value={descriptionOne}
+                  onChange={(e) => setDescriptionOne(e.target.value)}
+                />
+                <Input
+                  variant="standard"
+                  label="contenu"
+                  name="descriptionTwo"
+                  value={descriptionTwo}
+                  onChange={(e) => setDescriptionTwo(e.target.value)}
+                />
+                <Input
+                  variant="standard"
+                  label="contenu"
+                  name="descriptionThree"
+                  value={descriptionThree}
+                  onChange={(e) => setDescriptionThree(e.target.value)}
+                />
+              </div>
+              <div className="w-1/2 px-8">
+                <strong className="">Titre</strong>
+                <Textarea
+                  variant="standard"
+                  label="Titre de la page d'acceuil"
+                  name="title"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                />
+                <strong className="">Type d'industrue</strong>
+                <Input
+                  variant="standard"
+                  label="contenu"
+                  name="type"
+                  value={type}
+                  onChange={(e) => setType(e.target.value)}
+                />
+              </div>
+            </div>
+            <div className=" w-full flex px-8 mt-8">
+              <div className="w-1/2">
+                <strong className="">Problematic</strong>
+                <Textarea
+                  variant="standard"
+                  label="paragraphe 1"
+                  name="problematic.p1"
+                  value={problematic.p1}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    setProblematic((prevRecipient) => ({
+                      ...prevRecipient,
+                      p1: value,
+                    }));
+                  }}
+                />
+                <Textarea
+                  variant="standard"
+                  label="paragraphe 2"
+                  name="problematic.p2"
+                  value={problematic.p2}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    setProblematic((prevRecipient) => ({
+                      ...prevRecipient,
+                      p2: value,
+                    }));
+                  }}
+                />
+              </div>
+              <div className="w-1/2 px-8">
+                <strong className="">Strategy</strong>
+                <Textarea
+                  variant="standard"
+                  label="paragraphe 1"
+                  name="strategy.p1"
+                  value={strategy.p1}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    setStrategy((prevRecipient) => ({
+                      ...prevRecipient,
+                      p1: value,
+                    }));
+                  }}
+                />
+                <Textarea
+                  variant="standard"
+                  label="paragraphe 2"
+                  name="strategy.p1"
+                  value={strategy.p2}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    setStrategy((prevRecipient) => ({
+                      ...prevRecipient,
+                      p2: value,
+                    }));
+                  }}
+                />
+              </div>
+            </div>
+            <div className=" py-8 px-8">
+              <strong>Retour du client</strong>
+              <div className="flex space-x-8">
+                <Input
+                  variant="standard"
+                  label="nom du client"
+                  value={client.name}
+                  name="client.name"
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    setClient((prevRecipient) => ({
+                      ...prevRecipient,
+                      name: value,
+                    }));
+                  }}
+                />
+                <Input
+                  variant="standard"
+                  label="poste du client"
+                  value={client.role}
+                  name="client.role"
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    setClient((prevRecipient) => ({
+                      ...prevRecipient,
+                      role: value,
+                    }));
+                  }}
+                />
+              </div>
+              <div className="py-8 w-1/2">
+                <Textarea
+                  variant="standard"
+                  label="retour du client"
+                  value={client.p}
+                  name="client.p"
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    setClient((prevRecipient) => ({
+                      ...prevRecipient,
+                      p: value,
+                    }));
+                  }}
+                />
+              </div>
             </div>
             <div className="w-full py-8 flex items-center justify-center">
               <button
@@ -727,7 +899,7 @@ function Portfolio() {
           {allData.map((data, index) => (
             <div
               key={data._id}
-              className="xl:w-2/5 rounded-xl shadow-2xl p-4 m-8"
+              className="w-full rounded-xl shadow-2xl p-4 m-8"
             >
               <form
                 className="flex justify-center space-y-1 flex-col"
@@ -763,95 +935,207 @@ function Portfolio() {
                     onChange={(e) => handleChange(index, "p", e.target.value)}
                   />
                 </div>
-                <Input
-                  variant="standard"
-                  label="caratéristiques"
-                  value={data.featureOne}
-                  onChange={(e) =>
-                    handleChange(index, "featureOne", e.target.value)
-                  }
-                />
-                <Input
-                  variant="standard"
-                  label="caratéristiques"
-                  value={data.featureTwo}
-                  onChange={(e) =>
-                    handleChange(index, "featureTwo", e.target.value)
-                  }
-                />
-                <Input
-                  variant="standard"
-                  label="caratéristiques"
-                  value={data.featureThree}
-                  onChange={(e) =>
-                    handleChange(index, "featureThree", e.target.value)
-                  }
-                />
-                <Input
-                  variant="standard"
-                  label="caratéristiques"
-                  value={data.featureFour}
-                  onChange={(e) =>
-                    handleChange(index, "featureFour", e.target.value)
-                  }
-                />
-                <Input
-                  variant="standard"
-                  label="caratéristiques"
-                  value={data.featureFive}
-                  onChange={(e) =>
-                    handleChange(index, "featureFive", e.target.value)
-                  }
-                />
-                <Input
-                  variant="standard"
-                  label="caratéristiques"
-                  value={data.featureSix}
-                  onChange={(e) =>
-                    handleChange(index, "featureSix", e.target.value)
-                  }
-                />
-                <Input
-                  variant="standard"
-                  label="caratéristiques"
-                  value={data.featureSeven}
-                  onChange={(e) =>
-                    handleChange(index, "featureSeven", e.target.value)
-                  }
-                />
-                <strong className="">Description</strong>
-                <Input
-                  variant="standard"
-                  label="contenu"
-                  name="descriptionOne"
-                  value={data.descriptionOne}
-                  onChange={(e) =>
-                    handleChange(index, "descriptionOne", e.target.value)
-                  }
-                />
-                <Input
-                  variant="standard"
-                  label="contenu"
-                  name="descriptionTwo"
-                  value={data.descriptionTwo}
-                  onChange={(e) =>
-                    handleChange(index, "descriptionTwo", e.target.value)
-                  }
-                />
-                <Input
-                  variant="standard"
-                  label="contenu"
-                  name="descriptionThree"
-                  value={data.descriptionThree}
-                  onChange={(e) =>
-                    handleChange(index, "descriptionThree", e.target.value)
-                  }
-                />
-
-                <div className="w-full flex">
-                  <img src={data.picture[0]} className="h-32 w-1/3" />
-                  <img src={data.picture[1]} className="h-32 w-1/3 " />
-                  <img src={data.picture[2]} className="h-32 w-1/3  " />
+                <strong className="">Services fournis</strong>
+                <div className="flex w-full">
+                  <div className="pr-8 flex flex-col space-y-1 w-1/2">
+                    {" "}
+                    <Input
+                      variant="standard"
+                      label="caratéristiques"
+                      value={data.featureOne}
+                      onChange={(e) =>
+                        handleChange(index, "featureOne", e.target.value)
+                      }
+                    />
+                    <Input
+                      variant="standard"
+                      label="caratéristiques"
+                      value={data.featureTwo}
+                      onChange={(e) =>
+                        handleChange(index, "featureTwo", e.target.value)
+                      }
+                    />
+                    <Input
+                      variant="standard"
+                      label="caratéristiques"
+                      value={data.featureThree}
+                      onChange={(e) =>
+                        handleChange(index, "featureThree", e.target.value)
+                      }
+                    />
+                    <Input
+                      variant="standard"
+                      label="caratéristiques"
+                      value={data.featureFour}
+                      onChange={(e) =>
+                        handleChange(index, "featureFour", e.target.value)
+                      }
+                    />
+                  </div>
+                  <div className="px-8 flex flex-col space-y-1 w-1/2">
+                    <Input
+                      variant="standard"
+                      label="caratéristiques"
+                      value={data.featureFive}
+                      onChange={(e) =>
+                        handleChange(index, "featureFive", e.target.value)
+                      }
+                    />
+                    <Input
+                      variant="standard"
+                      label="caratéristiques"
+                      value={data.featureSix}
+                      onChange={(e) =>
+                        handleChange(index, "featureSix", e.target.value)
+                      }
+                    />
+                    <Input
+                      variant="standard"
+                      label="caratéristiques"
+                      value={data.featureSeven}
+                      onChange={(e) =>
+                        handleChange(index, "featureSeven", e.target.value)
+                      }
+                    />
+                  </div>
+                </div>
+                <div className="flex py-2 w-full">
+                  <div className="w-1/2 pr-8">
+                    <strong className="">Description</strong>
+                    <Input
+                      variant="standard"
+                      label="contenu"
+                      name="descriptionOne"
+                      value={data.descriptionOne}
+                      onChange={(e) =>
+                        handleChange(index, "descriptionOne", e.target.value)
+                      }
+                    />
+                    <Input
+                      variant="standard"
+                      label="contenu"
+                      name="descriptionTwo"
+                      value={data.descriptionTwo}
+                      onChange={(e) =>
+                        handleChange(index, "descriptionTwo", e.target.value)
+                      }
+                    />
+                    <Input
+                      variant="standard"
+                      label="contenu"
+                      name="descriptionThree"
+                      value={data.descriptionThree}
+                      onChange={(e) =>
+                        handleChange(index, "descriptionThree", e.target.value)
+                      }
+                    />
+                  </div>
+                  <div className="w-1/2 pr-8">
+                    <strong className="">Titre</strong>
+                    <Textarea
+                      variant="standard"
+                      label="Titre de la page d'acceuil"
+                      name="title"
+                      value={data.title}
+                      onChange={(e) =>
+                        handleChange(index, "title", e.target.value)
+                      }
+                    />
+                    <strong className="">Type d'industrue</strong>
+                    <Input
+                      variant="standard"
+                      label="contenu"
+                      name="type"
+                      value={data.type}
+                      onChange={(e) =>
+                        handleChange(index, "type", e.target.value)
+                      }
+                    />
+                  </div>
+                </div>
+                <div className=" w-full flex pr-8 py-1 mt-8">
+                  <div className="w-1/2">
+                    <strong className="">Problematic</strong>
+                    <Textarea
+                      variant="standard"
+                      label="paragraphe 1"
+                      name="problematic.p1"
+                      value={data.problematic && data.problematic.p1}
+                      onChange={(e) =>
+                        handleChange(index, "problematic.p1", e.target.value)
+                      }
+                    />
+                    <Textarea
+                      variant="standard"
+                      label="paragraphe 2"
+                      name="problematic.p2"
+                      value={data.problematic && data.problematic.p2}
+                      onChange={(e) =>
+                        handleChange(index, "problematic.p2", e.target.value)
+                      }
+                    />
+                  </div>
+                  <div className="w-1/2 px-8">
+                    <strong className="">Strategy</strong>
+                    <Textarea
+                      variant="standard"
+                      label="paragraphe 1"
+                      name="strategy.p1"
+                      value={data.strategy && data.strategy.p1}
+                      onChange={(e) =>
+                        handleChange(index, "strategy.p1", e.target.value)
+                      }
+                    />
+                    <Textarea
+                      variant="standard"
+                      label="paragraphe 2"
+                      name="strategy.p2"
+                      value={data.strategy && data.strategy.p2}
+                      onChange={(e) =>
+                        handleChange(index, "strategy.p2", e.target.value)
+                      }
+                    />
+                  </div>
+                </div>
+                <div className=" py-8 pr-8">
+                  <strong>Retour du client</strong>
+                  <div className="flex space-x-8">
+                    <Input
+                      variant="standard"
+                      label="nom du client"
+                      value={data.client && data.client.name}
+                      name="client.name"
+                      onChange={(e) =>
+                        handleChange(index, "client.name", e.target.value)
+                      }
+                    />
+                    <Textarea
+                      variant="standard"
+                      label="poste du client"
+                      name="client.role"
+                      value={data.client && data.client.role}
+                      onChange={(e) =>
+                        handleChange(index, "client.role", e.target.value)
+                      }
+                    />
+                  </div>
+                  <div className="py-8 w-1/2">
+                    <Textarea
+                      variant="standard"
+                      label="retour du client"
+                      value={data.client && data.client.p}
+                      name="client.p"
+                      onChange={(e) =>
+                        handleChange(index, "client.p", e.target.value)
+                      }
+                    />
+                  </div>
+                </div>
+                <div className="w-full space-x-1 flex">
+                  <img src={data.picture[0]} className="h-32 w-1/4" />
+                  <img src={data.picture[1]} className="h-32 w-1/4 " />
+                  <img src={data.picture[2]} className="h-32 w-1/4 " />
+                  <img src={data.picture[3]} className="h-32 w-1/4 " />
                 </div>
                 <div className="flex-col">
                   <div className="w-full py-8 flex space-x-6 items-center justify-center">

@@ -60,7 +60,7 @@ function Service() {
       event: event,
     };
     axios
-      .put("http://localhost:4000/service/6510a1350cecf95fbb9d42c2", data)
+      .put("https://caauri-api.cyclic.cloud/service/6510a1350cecf95fbb9d42c2", data)
       .then((res) => console.log("response", res))
       .catch((err) => console.log("error", err));
 

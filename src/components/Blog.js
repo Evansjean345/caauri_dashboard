@@ -38,7 +38,7 @@ function Blog() {
     formData.append("cover", cover);
 
     axios
-      .post("http://localhost:4000/all_blog", formData)
+      .post("https://caauri-api.cyclic.cloud/all_blog", formData)
       .then((res) => {
         console.log("response", res);
         handleOpen();
@@ -54,7 +54,7 @@ function Blog() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:4000/all_blog")
+      .get("https://caauri-api.cyclic.cloud/all_blog")
       .then((res) => {
         setAllData(res.data);
       })
@@ -641,7 +641,7 @@ function Blog() {
                   const updatedData = allData[index];
                   axios
                     .put(
-                      `http://localhost:4000/all_blog/${data._id}`,
+                      `https://caauri-api.cyclic.cloud/all_blog/${data._id}`,
                       updatedData
                     )
                     .then((res) => console.log("response", res))

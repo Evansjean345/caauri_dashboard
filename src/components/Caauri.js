@@ -25,7 +25,7 @@ function Caauri() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:4000/caauri/65097b48d3b64a105032ddfc")
+      .get("https://caauri-api.cyclic.cloud/caauri/65097b48d3b64a105032ddfc")
       .then((res) => {
         setFirstSection(res.data.firstSection);
         setLastSection(res.data.lastSection);
@@ -42,7 +42,7 @@ function Caauri() {
       lastSection: lastSection,
     };
     axios
-      .put("http://localhost:4000/caauri/65097b48d3b64a105032ddfc", data)
+      .put("https://caauri-api.cyclic.cloud/caauri/65097b48d3b64a105032ddfc", data)
       .then((res) => console.log("response", res))
       .catch((err) => console.log("error", err));
     handleOpen();
