@@ -908,7 +908,7 @@ function Portfolio() {
                   const updatedData = allData[index];
                   axios
                     .put(
-                      `http://localhost:4000/portfolio/${data._id}`,
+                      `https://caauri-api.cyclic.cloud/portfolio/${data._id}`,
                       updatedData
                     )
                     .then((res) => console.log("response", res))
@@ -1106,7 +1106,7 @@ function Portfolio() {
                       value={data.client && data.client.name}
                       name="client.name"
                       onChange={(e) =>
-                        handleChange(index, "client[name]", e.target.value)
+                        handleChange(index, "client.name", e.target.value)
                       }
                     />
                     <Textarea
@@ -1115,7 +1115,7 @@ function Portfolio() {
                       name="client.role"
                       value={data.client && data.client.role}
                       onChange={(e) =>
-                        handleChange(index, "client[role]", e.target.value)
+                        handleChange(index, "client.role", e.target.value)
                       }
                     />
                   </div>
@@ -1126,7 +1126,7 @@ function Portfolio() {
                       value={data.client && data.client.p}
                       name="client.p"
                       onChange={(e) =>
-                        handleChange(index, "client[p]", e.target.value)
+                        handleChange(index, "client.p", e.target.value)
                       }
                     />
                   </div>
