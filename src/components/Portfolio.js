@@ -68,15 +68,15 @@ function Portfolio() {
     formData.append("descriptionThree", descriptionThree);
     formData.append("title", title);
     ///
-    formData.append("problematic[p1]", problematic.p1);
-    formData.append("problematic[p2]", problematic.p2);
-    formData.append("strategy[p1]", strategy.p1);
-    formData.append("strategy[p2]", strategy.p2);
+    formData.append("problematic.p1", problematic.p1);
+    formData.append("problematic.p2", problematic.p2);
+    formData.append("strategy.p1", strategy.p1);
+    formData.append("strategy.p2", strategy.p2);
 
     // Ajouter les champs d'objet imbriqué 'client'
-    formData.append("client[name]", client.name);
-    formData.append("client[role]", client.role);
-    formData.append("client[p]", client.p);
+    formData.append("client.name", client.name);
+    formData.append("client.role", client.role);
+    formData.append("client.p", client.p);
     for (let i = 0; i < picture.length; i++) {
       formData.append(`picture`, picture[i]);
     }
