@@ -33,7 +33,7 @@ function Navbar() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:4000/home/65106a94b5ae36e57d7e64dd")
+      .get("https://caauri-api.cyclic.cloud/home/65106a94b5ae36e57d7e64dd")
       .then((res) => {
         setTitle(res.data.title);
         setSubtitle(res.data.subtitle);
@@ -56,7 +56,10 @@ function Navbar() {
       portfolio: portfolio,
     };
     axios
-      .put("http://localhost:4000/home/65106a94b5ae36e57d7e64dd", data)
+      .put(
+        "https://caauri-api.cyclic.cloud/home/65106a94b5ae36e57d7e64dd",
+        data
+      )
       .then((res) => console.log("response", res))
       .catch((err) => console.log("error", err));
 

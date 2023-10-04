@@ -1024,7 +1024,6 @@ function Portfolio() {
                     <Textarea
                       variant="standard"
                       label="paragraphe 2"
-       
                       name="problematicTwo"
                       value={data.problematicTwo}
                       onChange={(e) =>
