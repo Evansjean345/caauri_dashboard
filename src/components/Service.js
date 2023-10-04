@@ -37,7 +37,7 @@ function Service() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:4000/service/6510a1350cecf95fbb9d42c2")
+      .get("https://caauri-api.cyclic.cloud/service/6510a1350cecf95fbb9d42c2")
       .then((res) => {
         setTitle(res.data.title);
         setSubtitle(res.data.subtitle);

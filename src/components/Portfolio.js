@@ -1101,7 +1101,7 @@ function Portfolio() {
                         const updatedData = allData[index];
                         axios
                           .delete(
-                            `http://localhost:4000/portfolio/${data._id}`,
+                            `https://caauri-api.cyclic.cloud/portfolio/${data._id}`,
                             updatedData
                           )
                           .then((res) => console.log("response", res))
